@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UGTV Event Booking</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ===== NAVBAR (Fixed) ===== -->
+  <header class="navbar">
+    <div class="logo">🎥 UGTV Events</div>
+
+    <!-- Tombol Hamburger -->
+    <div class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Menu Navigasi -->
+    <nav id="navMenu">
+      <a href="#hero">Beranda</a>
+      <a href="#about">Tentang</a>
+      <a href="#events">Acara</a>
+      <a href="schedule.html">Kalender</a>
+      <a href="#contact">Kontak</a>
+      <a href="admin-login.html" class="login-link">Login</a>
+    </nav>
+  </header>
+
+  <!-- ===== KONTEN SCROLLABLE ===== -->
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="hero-content">
+        <h1>Kelola & Booking Jadwal Acara <br><span>Seminar, Webinar, Workshop</span></h1>
+        <p>Platform pemesanan jadwal acara UGTV — mudah, cepat, dan terintegrasi.</p>
+        <a href="schedule.html" class="btn-primary">Pesan Sekarang</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+      <h2>Tentang UGTV Event Booking</h2>
+      <p>
+        UGTV Event Booking adalah sistem yang dirancang untuk memudahkan pengelolaan dan pemesanan acara seperti
+        seminar, webinar, dan workshop. Platform ini memungkinkan pengguna mengatur jadwal, mendaftar peserta,
+        serta menampilkan informasi acara secara real-time.
+      </p>
+      <p>
+        Tujuan kami adalah memberikan kemudahan bagi penyelenggara acara dan peserta agar kegiatan berjalan lancar dan efisien.
+      </p>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events" class="events">
+      <h2>Daftar Acara</h2>
+      <div class="event-list">
+        <div class="event-card">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Seminar">
+          <h3>Seminar Nasional</h3>
+          <p>Topik: Transformasi Digital Pendidikan</p>
+          <a href="schedule.html" class="btn-daftar">Daftar</a>
+        </div>
+        <div class="event-card">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Webinar">
+          <h3>Webinar Inovasi Teknologi</h3>
+          <p>Topik: Kecerdasan Buatan dalam Industri</p>
+          <a href="schedule.html" class="btn-daftar">Daftar</a>
+        </div>
+        <div class="event-card">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Workshop">
+          <h3>Workshop</h3>
+          <p>Topik: Pengembangan Keterampilan Digital</p>
+          <a href="schedule.html" class="btn-daftar">Daftar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <h2>Hubungi Kami</h2>
+      <p>Jika ada pertanyaan atau kerja sama, silakan hubungi kami melalui:</p>
+      <div class="contact-info">
+        <p><strong>Email:</strong> ugtv@gunadarma.ac.id</p>
+        <p><strong>Telepon:</strong> (021) 78881112</p>
+        <p><strong>Alamat:</strong> Jl. Margonda Raya No.100, Pondok Cina</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 UGTV Events — All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Toggle menu saat di klik hamburger
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("active");
+      navMenu.classList.toggle("active");
+    });
+  </script>
+</body>
+</html>

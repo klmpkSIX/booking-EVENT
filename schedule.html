@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalender Jadwal | UGTV Events</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="stylesheet" href="css/schedule.css" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">🎥 UGTV Events</div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav id="navMenu">
+      <a href="index.html#hero">Beranda</a>
+      <a href="index.html#about">Tentang</a>
+      <a href="index.html#events">Acara</a>
+      <a href="schedule.html" class="active">Kalender</a>
+      <a href="index.html#contact">Kontak</a>
+      <a href="admin-login.html" class="login-link">Login</a>
+    </nav>
+  </header>
+
+  <!-- ===== KONTEN ===== -->
+  <main>
+    <section class="calendar-section">
+      <h1>📅 Jadwal Ketersediaan Acara</h1>
+
+      <!-- Dropdown Bulan & Tahun -->
+      <div class="calendar-header">
+        <label for="monthSelect">Bulan:</label>
+        <select id="monthSelect"></select>
+
+        <label for="yearSelect">Tahun:</label>
+        <select id="yearSelect"></select>
+      </div>
+
+      <!-- Nama Hari -->
+      <div class="day-names">
+        <div>Min</div>
+        <div>Sen</div>
+        <div>Sel</div>
+        <div>Rab</div>
+        <div>Kam</div>
+        <div>Jum</div>
+        <div>Sab</div>
+      </div>
+
+      <!-- Kalender -->
+      <div class="calendar-grid" id="calendar"></div>
+
+      <!-- Legenda -->
+      <div class="legend">
+        <span class="legend-item booked">🔴 Sudah dibooking</span>
+        <span class="legend-item available">🟢 Tersedia</span>
+        <span class="legend-item select">🟡 Dipilih</span>
+      </div>
+
+      <!-- Info Jadwal -->
+      <div class="schedule-info">
+        <h3 id="selectedDate">Pilih tanggal di kalender</h3>
+        <ul id="availableTimes"></ul>
+        <button id="nextButton" class="next-btn" style="display: none;">Lanjutkan ➜</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 UGTV Events — Universitas Gunadarma</p>
+  </footer>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    /* ====== MENU TOGGLE ====== */
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("active");
+      navMenu.classList.toggle("active");
+    });
+
+    /* ====== DATA DAN VARIABEL ====== */
+    const calendar = document.getElementById("calendar");
+    const availableTimes = document.getElementById("availableTimes");
+    const selectedDate = document.getElementById("selectedDate");
+    const nextButton = document.getElementById("nextButton");
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+
+    const monthNames = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    let currentDate = new Date();
+
+    /* ====== DATA BOOKING DUMMY (LOCALSTORAGE) ====== */
+    function getBookings() {
+      return JSON.parse(localStorage.getItem("bookings") || "[]");
+    }
+
+    function getBookedDates() {
+      const data = getBookings();
+      const grouped = {};
+      data.forEach(b => {
+        if (!grouped[b.tanggal]) grouped[b.tanggal] = [];
+        grouped[b.tanggal].push(b);
+      });
+      return grouped;
+    }
+
+    /* ====== INISIALISASI DROPDOWN ====== */
+    monthNames.forEach((month, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = month;
+      monthSelect.appendChild(opt);
+    });
+
+    const currentYear = currentDate.getFullYear();
+    for (let y = currentYear - 2; y <= currentYear + 3; y++) {
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+    }
+
+    monthSelect.value = currentDate.getMonth();
+    yearSelect.value = currentDate.getFullYear();
+
+    /* ====== RENDER KALENDER ====== */
+    function renderCalendar() {
+      calendar.innerHTML = "";
+      const year = parseInt(yearSelect.value);
+      const month = parseInt(monthSelect.value);
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const bookedDates = getBookedDates();
+
+      // Kosongkan grid awal (spasi sebelum tanggal 1)
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        empty.classList.add("empty");
+        calendar.appendChild(empty);
+      }
+
+      // Isi tanggal kalender
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateStr = dateObj.toISOString().split("T")[0];
+        const cell = document.createElement("div");
+        cell.classList.add("day");
+        cell.textContent = day;
+
+        // Status tanggal
+        if (bookedDates[dateStr]) {
+          cell.classList.add("booked");
+          cell.title = "Sudah dibooking";
+        } else {
+          cell.classList.add("available");
+          cell.title = "Tanggal tersedia";
+        }
+
+        // Klik tanggal
+        cell.addEventListener("click", () => showSchedule(dateStr, cell, bookedDates));
+        calendar.appendChild(cell);
+      }
+    }
+
+    /* ====== TAMPILKAN INFO TANGGAL ====== */
+    function showSchedule(dateStr, cell, bookedDates) {
+      document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+      cell.classList.add("selected");
+
+      selectedDate.textContent = `Jadwal tanggal ${new Date(dateStr).toLocaleDateString("id-ID")}:`;
+      availableTimes.innerHTML = "";
+      nextButton.style.display = "none";
+
+      if (bookedDates[dateStr]) {
+        bookedDates[dateStr].forEach(slot => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            ❌ <strong>${slot.jenis}</strong><br>
+            ${slot.mulai} - ${slot.selesai} (${slot.nama})
+          `;
+          availableTimes.appendChild(li);
+        });
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "✅ Semua jam tersedia (09:00 - 17:00)";
+        availableTimes.appendChild(li);
+
+        nextButton.style.display = "block";
+        nextButton.onclick = () => {
+          window.location.href = `booking.html?tanggal=\${dateStr}`;
+        };
+      }
+    }
+
+    // Event: ganti bulan/tahun
+    monthSelect.addEventListener("change", renderCalendar);
+    yearSelect.addEventListener("change", renderCalendar);
+
+    // Tampilkan kalender pertama kali
+    renderCalendar();
+  </script>
+</body>
+</html>

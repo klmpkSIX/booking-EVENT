@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | UGTV Events</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="logo">🎥 UGTV Admin Panel</div>
+    <nav>
+      <a href="admin-login.html" class="logout-btn">Logout</a>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <section class="admin-section">
+      <h1>📋 Daftar Booking</h1>
+
+      <!-- TABLE DATA -->
+      <div class="table-container">
+        <table id="bookingTable">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Mulai</th>
+              <th>Selesai</th>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Jenis Acara</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- KALENDER -->
+      <h2>📅 Kalender Booking</h2>
+      <div class="calendar-header">
+        <label for="monthSelect">Bulan:</label>
+        <select id="monthSelect"></select>
+        <label for="yearSelect">Tahun:</label>
+        <select id="yearSelect"></select>
+      </div>
+
+      <div class="day-names">
+        <div>Min</div><div>Sen</div><div>Sel</div>
+        <div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+      </div>
+
+      <div class="calendar-grid" id="calendar"></div>
+
+      <div class="legend">
+        <span class="legend-item booked">🔴 Sudah dibooking</span>
+        <span class="legend-item available">🟢 Tersedia</span>
+        <span class="legend-item selected">🟡 Dipilih</span>
+      </div>
+
+      <div class="selected-date">
+        <h3 id="selectedDate">Pilih tanggal di kalender</h3>
+        <ul id="dateBookings"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 UGTV Events — Universitas Gunadarma
+  </footer>
+
+  <script>
+    const bookingTableBody = document.querySelector("#bookingTable tbody");
+    const calendar = document.getElementById("calendar");
+    const selectedDateTitle = document.getElementById("selectedDate");
+    const dateBookings = document.getElementById("dateBookings");
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+
+    const months = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    let bookedSlots = JSON.parse(localStorage.getItem("bookedSlots") || "{}");
+    let currentDate = new Date();
+
+    // === Isi dropdown bulan dan tahun ===
+    months.forEach((m, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = m;
+      if (i === currentDate.getMonth()) opt.selected = true;
+      monthSelect.appendChild(opt);
+    });
+
+    const currentYear = currentDate.getFullYear();
+    for (let y = currentYear - 2; y <= currentYear + 2; y++) {
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      if (y === currentYear) opt.selected = true;
+      yearSelect.appendChild(opt);
+    }
+
+    // === Render Tabel ===
+    function renderTable() {
+      bookingTableBody.innerHTML = "";
+      Object.keys(bookedSlots).sort().forEach(date => {
+        bookedSlots[date].forEach((slot, index) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${date}</td>
+            <td>${slot.start}</td>
+            <td>${slot.end}</td>
+            <td>${slot.nama}</td>
+            <td>${slot.email || "-"}</td>
+            <td>${slot.jenis}</td>
+            <td><button class="btn-delete" data-date="${date}" data-index="${index}">Hapus</button></td>
+          `;
+          bookingTableBody.appendChild(tr);
+        });
+      });
+      attachDeleteButtons();
+    }
+
+    function attachDeleteButtons() {
+      document.querySelectorAll(".btn-delete").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const date = btn.dataset.date;
+          const index = btn.dataset.index;
+          bookedSlots[date].splice(index,1);
+          if(bookedSlots[date].length === 0) delete bookedSlots[date];
+          localStorage.setItem("bookedSlots", JSON.stringify(bookedSlots));
+          renderTable();
+          renderCalendar();
+          dateBookings.innerHTML = "";
+          selectedDateTitle.textContent = "Pilih tanggal di kalender";
+        });
+      });
+    }
+
+    // === Render Kalender ===
+    function renderCalendar() {
+      calendar.innerHTML = "";
+      const year = parseInt(yearSelect.value);
+      const month = parseInt(monthSelect.value);
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        empty.classList.add("empty");
+        calendar.appendChild(empty);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateStr = dateObj.toISOString().split("T")[0];
+        const cell = document.createElement("div");
+        cell.classList.add("day");
+        cell.textContent = day;
+
+        if (bookedSlots[dateStr]) {
+          cell.classList.add("booked");
+          cell.title = "Sudah dibooking";
+        } else {
+          cell.classList.add("available");
+          cell.title = "Tanggal tersedia";
+        }
+
+        cell.addEventListener("click", () => showDateBookings(dateStr, cell));
+        calendar.appendChild(cell);
+      }
+    }
+
+    // === Menampilkan Booking Tanggal ===
+    function showDateBookings(dateStr, cell) {
+      document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+      cell.classList.add("selected");
+      selectedDateTitle.textContent = `Booking tanggal ${dateStr}:`;
+      dateBookings.innerHTML = "";
+
+      if (bookedSlots[dateStr]) {
+        bookedSlots[dateStr].forEach((slot, index) => {
+          const li = document.createElement("li");
+          li.innerHTML = `❌ ${slot.start} - ${slot.end} | <strong>${slot.nama}</strong> (${slot.jenis})`;
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "Hapus";
+          delBtn.className = "btn-delete-inline";
+          delBtn.addEventListener("click", () => {
+            bookedSlots[dateStr].splice(index,1);
+            if (bookedSlots[dateStr].length === 0) delete bookedSlots[dateStr];
+            localStorage.setItem("bookedSlots", JSON.stringify(bookedSlots));
+            renderTable();
+            renderCalendar();
+            dateBookings.innerHTML = "";
+            selectedDateTitle.textContent = "Pilih tanggal di kalender";
+          });
+          li.appendChild(delBtn);
+          dateBookings.appendChild(li);
+        });
+      } else {
+        dateBookings.innerHTML = "<li>✅ Tidak ada booking untuk tanggal ini</li>";
+      }
+    }
+
+    monthSelect.addEventListener("change", renderCalendar);
+    yearSelect.addEventListener("change", renderCalendar);
+
+    renderTable();
+    renderCalendar();
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+/* ==========================
+   RESET & DASAR
+========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: linear-gradient(135deg, #003366, #0066cc);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================
+   NAVBAR (SIMPLE FIXED)
+========================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.logo a {
+  color: #ffcc00;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.logo a:hover {
+  color: #ffd633;
+}
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+main {
+  flex: 1;
+  overflow-y: auto; /* scroll hanya di area isi */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 20px 100px;
+}
+
+.form-section {
+  max-width: 600px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 40px 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ==========================
+   FORM ELEMENTS
+========================== */
+h1 {
+  text-align: center;
+  color: #ffcc00;
+  margin-bottom: 30px;
+  font-size: 1.9rem;
+  letter-spacing: 0.6px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #ffecb3;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: #fff;
+  color: #003366;
+  font-size: 0.95rem;
+  transition: box-shadow 0.3s ease, transform 0.1s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #ffcc00;
+  transform: scale(1.01);
+}
+
+/* ==========================
+   BUTTON
+========================== */
+.btn-submit {
+  width: 100%;
+  background: #ffcc00;
+  color: #003366;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+  background: #ffd633;
+  transform: translateY(-2px);
+}
+
+/* ==========================
+   MESSAGES
+========================== */
+.hidden {
+  display: none;
+}
+
+.success,
+.error {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.success {
+  background: rgba(0, 255, 127, 0.15);
+  color: #b5ffcb;
+}
+
+.error {
+  background: rgba(255, 0, 0, 0.15);
+  color: #ffc6c6;
+}
+
+/* ==========================
+   BACK BUTTON
+========================== */
+.btn-back {
+  display: inline-block;
+  text-align: center;
+  margin-top: 25px;
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================
+   FOOTER
+========================== */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #002244;
+  text-align: center;
+  padding: 15px 10px;
+  color: #ddd;
+  font-size: 0.9rem;
+  letter-spacing: 0.4px;
+  z-index: 1000;
+}
+
+/* ==========================
+   ANIMASI & RESPONSIVE
+========================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+  }
+
+  .logo a {
+    font-size: 1.3rem;
+  }
+
+  .form-section {
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  input,
+  select,
+  .btn-submit {
+    font-size: 0.9rem;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+}
