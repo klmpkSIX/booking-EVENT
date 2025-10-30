@@ -23,25 +23,29 @@
     </div>
   </main>
 
-  <script>
-    const form = document.getElementById("loginForm");
-    const errorMsg = document.getElementById("errorMsg");
+  <script type="module">
+import { auth, signInWithEmailAndPassword } from "./js/firebase-config.js";
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      errorMsg.classList.add("hidden");
+const form = document.getElementById("loginForm");
+const errorMsg = document.getElementById("errorMsg");
 
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  errorMsg.classList.add("hidden");
 
-      // Login sederhana (demo)
-      if (username === "admin" && password === "admin123") {
-        window.location.href = "admin.html";
-      } else {
-        errorMsg.textContent = "⚠️ Username atau password salah!";
-        errorMsg.classList.remove("hidden");
-      }
-    });
-  </script>
+  const email = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    localStorage.setItem("isAdmin", "true");
+    window.location.href = "admin.html";
+  } catch (error) {
+    errorMsg.textContent = "⚠️ Login gagal: " + error.message;
+    errorMsg.classList.remove("hidden");
+  }
+});
+</script>
+
 </body>
 </html>
