@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UGTV Event Booking</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="favicon.png" type="image/png" />
 </head>
 <body>
   <!-- ===== NAVBAR (Fixed) ===== -->
   <header class="navbar">
-    <div class="logo">🎥 UGTV Events</div>
+    <div class="logo"><a href="index.html">🎥 UGTV Events</a></div>
 
     <!-- Tombol Hamburger -->
     <div class="menu-toggle" id="menuToggle">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </div>
 
     <!-- Menu Navigasi -->
@@ -36,7 +35,7 @@
       <div class="hero-content">
         <h1>Kelola & Booking Jadwal Acara <br><span>Seminar, Webinar, Workshop</span></h1>
         <p>Platform pemesanan jadwal acara UGTV — mudah, cepat, dan terintegrasi.</p>
-        <a href="schedule.html" class="btn-primary">Pesan Sekarang</a>
+        <a href="schedule.html" class="btn-primary">Mulai Booking</a>
       </div>
     </section>
 
@@ -44,12 +43,11 @@
     <section id="about" class="about">
       <h2>Tentang UGTV Event Booking</h2>
       <p>
-        UGTV Event Booking adalah sistem yang dirancang untuk memudahkan pengelolaan dan pemesanan acara seperti
-        seminar, webinar, dan workshop. Platform ini memungkinkan pengguna mengatur jadwal, mendaftar peserta,
-        serta menampilkan informasi acara secara real-time.
+        UGTV Event Booking memudahkan pengelolaan dan pemesanan acara seperti seminar, webinar, dan workshop.
+        Pengguna dapat mengatur jadwal, mendaftar peserta, dan memantau acara secara real-time.
       </p>
       <p>
-        Tujuan kami adalah memberikan kemudahan bagi penyelenggara acara dan peserta agar kegiatan berjalan lancar dan efisien.
+        Tujuan kami adalah memberikan kemudahan bagi penyelenggara dan peserta agar kegiatan berjalan efisien.
       </p>
     </section>
 
@@ -58,22 +56,22 @@
       <h2>Daftar Acara</h2>
       <div class="event-list">
         <div class="event-card">
-          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Seminar">
+          <img src="img/studio.JPG" alt="Seminar">
           <h3>Seminar Nasional</h3>
           <p>Topik: Transformasi Digital Pendidikan</p>
-          <a href="schedule.html" class="btn-daftar">Daftar</a>
+          <button class="btn-daftar" data-event="Seminar Nasional">Daftar</button>
         </div>
         <div class="event-card">
-          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Webinar">
+          <img src="img/studio.JPG" alt="Webinar">
           <h3>Webinar Inovasi Teknologi</h3>
           <p>Topik: Kecerdasan Buatan dalam Industri</p>
-          <a href="schedule.html" class="btn-daftar">Daftar</a>
+          <button class="btn-daftar" data-event="Webinar Inovasi Teknologi">Daftar</button>
         </div>
         <div class="event-card">
-          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" alt="Workshop">
+          <img src="img/studio.JPG" alt="Workshop">
           <h3>Workshop</h3>
           <p>Topik: Pengembangan Keterampilan Digital</p>
-          <a href="schedule.html" class="btn-daftar">Daftar</a>
+          <button class="btn-daftar" data-event="Workshop">Daftar</button>
         </div>
       </div>
     </section>
@@ -90,18 +88,28 @@
     </section>
   </main>
 
+  <!-- ===== FOOTER (Fixed) ===== -->
   <footer>
-    <p>© 2025 UGTV Events — All Rights Reserved.</p>
+    <p>© 2025 UGTV Events — Universitas Gunadarma</p>
   </footer>
 
+  <!-- ===== SCRIPT ===== -->
   <script>
-    // Toggle menu saat di klik hamburger
+    // 🔹 Toggle menu hamburger
     const menuToggle = document.getElementById("menuToggle");
     const navMenu = document.getElementById("navMenu");
 
     menuToggle.addEventListener("click", () => {
       menuToggle.classList.toggle("active");
       navMenu.classList.toggle("active");
+    });
+
+    // 🔹 Tombol "Daftar" kirim event ke booking.html
+    document.querySelectorAll(".btn-daftar").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const eventName = encodeURIComponent(btn.dataset.event);
+        window.location.href = `booking.html?event=${eventName}`;
+      });
     });
   </script>
 </body>
