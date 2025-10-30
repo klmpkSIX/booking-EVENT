@@ -1,6 +1,6 @@
-/* ==========================
+/* ======================================
    RESET & DASAR
-========================== */
+====================================== */
 * {
   margin: 0;
   padding: 0;
@@ -10,15 +10,19 @@
 
 html, body {
   height: 100%;
-  background: linear-gradient(135deg, #003366, #0066cc);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
+  scroll-behavior: smooth;
 }
 
-/* ==========================
-   NAVBAR (SIMPLE FIXED)
-========================== */
+body {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #003366, #0066cc);
+  color: #fff;
+}
+
+/* ======================================
+   NAVBAR
+====================================== */
 .navbar {
   position: fixed;
   top: 0;
@@ -28,205 +32,173 @@ html, body {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
 .logo a {
-  color: #ffcc00;
   font-weight: 700;
-  font-size: 1.5rem;
+  color: #ffcc00;
+  font-size: 1.4rem;
   text-decoration: none;
-  transition: color 0.3s ease;
 }
 
-.logo a:hover {
-  color: #ffd633;
-}
-
-/* ==========================
-   MAIN CONTENT
-========================== */
+/* ======================================
+   FORM SECTION
+====================================== */
 main {
   flex: 1;
-  overflow-y: auto; /* scroll hanya di area isi */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 100px 20px 100px;
+  align-items: center;
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 .form-section {
-  max-width: 600px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.12);
-  padding: 40px 30px;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-  animation: fadeIn 0.8s ease-in-out;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  padding: 40px 50px;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 
-/* ==========================
-   FORM ELEMENTS
-========================== */
-h1 {
-  text-align: center;
+.form-section h1 {
   color: #ffcc00;
-  margin-bottom: 30px;
-  font-size: 1.9rem;
-  letter-spacing: 0.6px;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+/* ======================================
+   FORM INPUT
+====================================== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
 }
 
 label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #ffecb3;
+  font-weight: 500;
+  color: #ffcc00;
 }
 
-input,
-select {
-  width: 100%;
-  padding: 12px;
+input, select {
+  padding: 10px 14px;
+  border-radius: 8px;
   border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  background: #fff;
-  color: #003366;
-  font-size: 0.95rem;
-  transition: box-shadow 0.3s ease, transform 0.1s ease;
-}
-
-input:focus,
-select:focus {
   outline: none;
-  box-shadow: 0 0 0 3px #ffcc00;
-  transform: scale(1.01);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s;
 }
 
-/* ==========================
+input:focus, select:focus {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 8px #ffcc00;
+}
+
+::placeholder {
+  color: #ddd;
+}
+
+/* ======================================
    BUTTON
-========================== */
+====================================== */
 .btn-submit {
-  width: 100%;
   background: #ffcc00;
   color: #003366;
-  padding: 12px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 12px 0;
   font-weight: 600;
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
 .btn-submit:hover {
   background: #ffd633;
-  transform: translateY(-2px);
+  transform: scale(1.05);
 }
 
-/* ==========================
-   MESSAGES
-========================== */
+/* ======================================
+   PESAN SUKSES & ERROR
+====================================== */
+.success, .error {
+  margin-top: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.success {
+  color: #00ff88;
+}
+
+.error {
+  color: #ff4444;
+}
+
 .hidden {
   display: none;
 }
 
-.success,
-.error {
-  text-align: center;
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.success {
-  background: rgba(0, 255, 127, 0.15);
-  color: #b5ffcb;
-}
-
-.error {
-  background: rgba(255, 0, 0, 0.15);
-  color: #ffc6c6;
-}
-
-/* ==========================
-   BACK BUTTON
-========================== */
+/* ======================================
+   LINK BACK
+====================================== */
 .btn-back {
   display: inline-block;
-  text-align: center;
   margin-top: 25px;
-  width: 100%;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #fff;
+  color: #ffcc00;
   text-decoration: none;
   font-weight: 500;
-  transition: background 0.3s ease;
+  transition: 0.3s;
 }
 
 .btn-back:hover {
-  background: rgba(255, 255, 255, 0.2);
+  text-decoration: underline;
 }
 
-/* ==========================
+/* ======================================
    FOOTER
-========================== */
+====================================== */
 footer {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   background: #002244;
   text-align: center;
-  padding: 15px 10px;
+  padding: 15px;
   color: #ddd;
   font-size: 0.9rem;
-  letter-spacing: 0.4px;
   z-index: 1000;
 }
 
-/* ==========================
-   ANIMASI & RESPONSIVE
-========================== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    height: 60px;
-  }
-
-  .logo a {
-    font-size: 1.3rem;
-  }
-
+/* ======================================
+   RESPONSIVE DESIGN
+====================================== */
+@media (max-width: 600px) {
   .form-section {
-    padding: 25px;
+    padding: 30px 25px;
   }
 
-  h1 {
+  .form-section h1 {
     font-size: 1.5rem;
   }
 
-  input,
-  select,
-  .btn-submit {
+  input, select {
     font-size: 0.9rem;
   }
 
-  footer {
-    font-size: 0.8rem;
+  .btn-submit {
+    font-size: 0.95rem;
   }
 }
