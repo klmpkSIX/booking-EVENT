@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/booking.css" />
 </head>
 <body>
-  <!-- HEADER -->
   <header class="navbar">
     <div class="logo"><a href="index.html">🎥 UGTV Events</a></div>
   </header>
@@ -19,13 +18,13 @@
 
       <form id="bookingForm">
         <label>Nama Lengkap:</label>
-        <input type="text" id="nama" required>
+        <input type="text" id="nama" name="nama" required>
 
         <label>Email:</label>
-        <input type="email" id="email" required>
+        <input type="email" id="email" name="email" required>
 
         <label>Jenis Acara:</label>
-        <select id="jenis" required>
+        <select id="jenis" name="jenis" required>
           <option value="">-- Pilih Jenis Acara --</option>
           <option>Produksi Studio</option>
           <option>Live Broadcast</option>
@@ -33,21 +32,20 @@
         </select>
 
         <label>Tanggal Acara:</label>
-        <input type="date" id="tanggal" required>
+        <input type="date" id="tanggal" name="tanggal" required>
 
         <label>Waktu Mulai:</label>
-        <input type="time" id="mulai" required>
+        <input type="time" id="mulai" name="mulai" required>
 
         <label>Waktu Selesai:</label>
-        <input type="time" id="selesai" required>
+        <input type="time" id="selesai" name="selesai" required>
 
-        <button type="submit" class="btn-submit">Kirim</button>
+        <button type="submit" class="btn-submit">Kirim Booking</button>
       </form>
 
       <p id="msg-success" class="hidden success">✅ Booking berhasil dikirim!</p>
       <p id="msg-error" class="hidden error"></p>
-
-      <a href="index.html" class="btn-back">← Kembali ke Halaman Utama</a>
+      <a href="schedule.html" class="btn-back">← Kembali ke Kalender</a>
     </section>
   </main>
 
@@ -55,94 +53,6 @@
     <p>© 2025 UGTV Events — Universitas Gunadarma</p>
   </footer>
 
-  <script>
-    const form = document.getElementById("bookingForm");
-    const msgSuccess = document.getElementById("msg-success");
-    const msgError = document.getElementById("msg-error");
-
-    // Ambil parameter tanggal dari URL (kalau dikirim dari halaman lain)
-    const params = new URLSearchParams(window.location.search);
-    const tanggalParam = params.get("tanggal");
-    if (tanggalParam) document.getElementById("tanggal").value = tanggalParam;
-
-    // Fungsi ambil data booking dari localStorage
-    function getBookings() {
-      return JSON.parse(localStorage.getItem("bookings") || "[]");
-    }
-
-    // Fungsi simpan data booking
-    function saveBooking(booking) {
-      const bookings = getBookings();
-      bookings.push(booking);
-      localStorage.setItem("bookings", JSON.stringify(bookings));
-    }
-
-    // Cek apakah waktu bentrok di tanggal yang sama
-    function isTimeConflict(tanggal, mulai, selesai) {
-      const bookings = getBookings();
-      return bookings.some(b =>
-        b.tanggal === tanggal &&
-        !(selesai <= b.mulai || mulai >= b.selesai)
-      );
-    }
-
-    // Saat form dikirim
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      msgError.classList.add("hidden");
-      msgSuccess.classList.add("hidden");
-
-      const nama = document.getElementById("nama").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const jenis = document.getElementById("jenis").value;
-      const tanggal = document.getElementById("tanggal").value;
-      const mulai = document.getElementById("mulai").value;
-      const selesai = document.getElementById("selesai").value;
-
-      // Validasi email
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        msgError.textContent = "⚠️ Format email tidak valid.";
-        msgError.classList.remove("hidden");
-        return;
-      }
-
-      // Validasi waktu mulai < selesai
-      if (mulai >= selesai) {
-        msgError.textContent = "⚠️ Waktu mulai harus lebih awal dari waktu selesai.";
-        msgError.classList.remove("hidden");
-        return;
-      }
-
-      // Cek bentrok jadwal
-      if (isTimeConflict(tanggal, mulai, selesai)) {
-        msgError.textContent = "❌ Waktu tersebut sudah dibooking.";
-        msgError.classList.remove("hidden");
-        return;
-      }
-
-      // Simpan booking ke localStorage
-      const bookingData = {
-        nama,
-        email,
-        jenis,
-        tanggal,
-        mulai,
-        selesai,
-        status: "Menunggu Konfirmasi",
-        waktuInput: new Date().toISOString()
-      };
-
-      saveBooking(bookingData);
-
-      // Pesan sukses
-      msgSuccess.classList.remove("hidden");
-      form.reset();
-
-      // Arahkan ke halaman jadwal setelah 2 detik
-      setTimeout(() => {
-        window.location.href = "schedule.html";
-      }, 2000);
-    });
-  </script>
+  <script type="module" src="js/booking.js"></script>
 </body>
 </html>
