@@ -8,9 +8,11 @@
   font-family: "Poppins", sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   scroll-behavior: smooth;
+  scroll-padding-top: 90px; /* ✅ Biar anchor link tidak ketutupan navbar */
 }
 
 body {
@@ -22,7 +24,7 @@ body {
 }
 
 /* ======================================
-   NAVBAR
+   NAVBAR (FIXED)
 ====================================== */
 .navbar {
   position: fixed;
@@ -39,10 +41,11 @@ body {
   z-index: 1000;
 }
 
-.logo {
+.logo a {
   font-weight: 700;
   color: #ffcc00;
   font-size: 1.4rem;
+  text-decoration: none;
 }
 
 /* ===== MENU LINK ===== */
@@ -70,6 +73,7 @@ nav a.login-link {
   padding: 6px 14px;
   border-radius: 8px;
   font-weight: 600;
+  transition: all 0.3s;
 }
 
 nav a.login-link:hover {
@@ -94,13 +98,14 @@ nav a.login-link:hover {
   transition: all 0.3s ease;
 }
 
-/* Animasi garis menjadi silang */
 .menu-toggle.active span:nth-child(1) {
   transform: translateY(7.5px) rotate(45deg);
 }
+
 .menu-toggle.active span:nth-child(2) {
   opacity: 0;
 }
+
 .menu-toggle.active span:nth-child(3) {
   transform: translateY(-7.5px) rotate(-45deg);
 }
@@ -120,7 +125,7 @@ main {
 ====================================== */
 .hero {
   height: 100vh;
-  background: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7')
+  background: url("https://images.unsplash.com/photo-1556761175-5973dc0f32e7")
     center/cover no-repeat;
   display: flex;
   align-items: center;
@@ -143,6 +148,7 @@ main {
   padding: 40px 60px;
   border-radius: 16px;
   max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .hero-content h1 {
@@ -179,7 +185,7 @@ main {
 ====================================== */
 .about {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -201,7 +207,7 @@ main {
 ====================================== */
 .events {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
 }
 
 .events h2 {
@@ -271,7 +277,7 @@ main {
 ====================================== */
 .contact {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -286,7 +292,7 @@ main {
 }
 
 /* ======================================
-   FOOTER
+   FOOTER (FIXED)
 ====================================== */
 footer {
   position: fixed;
@@ -305,12 +311,10 @@ footer {
    RESPONSIVE DESIGN
 ====================================== */
 @media (max-width: 900px) {
-  /* tampilkan tombol menu */
   .menu-toggle {
     display: flex;
   }
 
-  /* sembunyikan nav default */
   nav {
     position: absolute;
     top: 70px;
